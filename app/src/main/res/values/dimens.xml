@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="list_item_margin_small">8dp</dimen>
+    <dimen name="list_item_margin_large">16dp</dimen>
+    <dimen name="list_item_padding">4dp</dimen>
+
+    <dimen name="image_list_item_width">120dp</dimen>
+
+</resources>
