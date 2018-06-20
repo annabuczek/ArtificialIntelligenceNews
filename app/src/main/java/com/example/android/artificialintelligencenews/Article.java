@@ -51,4 +51,12 @@ public class Article {
     public void setAuthor(String author) {
         this.author = author;
     }
+
+    public String getWebUrl() {
+        return webUrl;
+    }
+
+    public void setWebUrl(String webUrl) {
+        this.webUrl = webUrl;
+    }
 }
