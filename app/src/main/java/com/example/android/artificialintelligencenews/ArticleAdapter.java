@@ -48,7 +48,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         dateTextView.setText(formatDateTime(article.getDate()));
 
         TextView authorTextView = convertView.findViewById(R.id.list_item_author);
-        authorTextView.setText(article.getAuthor());
+        authorTextView.setText(buildAuthorString(article.getAuthor()));
         return convertView;
     }
 
@@ -71,10 +71,19 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
             // Format Date object to get formattedDate String
             formattedDate = newFormat.format(date);
         } catch (ParseException e) {
-            Log.e("ArticleAdapter", "Problem parsing datatime Sring", e);
+            Log.e("ArticleAdapter", "Problem parsing data String to custom format", e);
         }
         return formattedDate;
+    }
 
-
+    /**
+     * Method to build the string for displaying author information
+     * @param author String representing author parsed from JSON
+     * @return ready to display String representing author
+     */
+    private String buildAuthorString(String author) {
+        StringBuilder output = new StringBuilder();
+        output.append("by ").append(author);
+        return output.toString();
     }
 }
