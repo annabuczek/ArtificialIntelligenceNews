@@ -1,5 +1,7 @@
 package com.example.android.artificialintelligencenews;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by aania on 20.06.2018.
  */
@@ -11,13 +13,15 @@ public class Article {
     private String date;
     private String author;
     private String webUrl;
+    private Bitmap image;
 
-    public Article(String category, String title, String date, String author, String webUrl) {
+    public Article(String category, String title, String date, String author, String webUrl, Bitmap image) {
         this.category = category;
         this.title = title;
         this.date = date;
         this.author = author;
         this.webUrl = webUrl;
+        this.image = image;
     }
 
     public String getCategory() {
@@ -58,5 +62,13 @@ public class Article {
 
     public void setWebUrl(String webUrl) {
         this.webUrl = webUrl;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }

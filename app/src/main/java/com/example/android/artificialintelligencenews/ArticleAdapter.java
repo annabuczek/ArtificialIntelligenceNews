@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -49,6 +50,10 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
         TextView authorTextView = convertView.findViewById(R.id.list_item_author);
         authorTextView.setText(buildAuthorString(article.getAuthor()));
+
+        ImageView imageView = convertView.findViewById(R.id.list_item_image_view);
+        imageView.setImageBitmap(article.getImage());
+
         return convertView;
     }
 

@@ -1,5 +1,7 @@
 package com.example.android.artificialintelligencenews;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -123,7 +125,14 @@ public final class QueryUtils {
                 JSONObject fields = articleInfo.getJSONObject("fields");
                 String authorArticle = fields.getString("byline");
 
-                Article article = new Article(categoryArticle, titleArticle, dateArticle, authorArticle, webUrlArticle);
+                String imageURL = fields.getString("thumbnail");
+                Bitmap imageArticle = loadImageFromUrl(imageURL);
+
+                if (imageArticle == null) {
+                    return null;
+                }
+
+                Article article = new Article(categoryArticle, titleArticle, dateArticle, authorArticle, webUrlArticle, imageArticle);
                 articles.add(article);
             }
 
@@ -133,6 +142,58 @@ public final class QueryUtils {
         }
 
         return articles;
+    }
+
+    private static Bitmap loadImageFromUrl(String imageUrl) {
+        URL url = createURLObject(imageUrl);
+        Bitmap bitmap = null;
+
+        try {
+            bitmap = makeHttpRequestForImage(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem with load image from Url", e);
+        }
+
+        return bitmap;
+    }
+
+    private static Bitmap makeHttpRequestForImage(URL url) throws IOException {
+
+        Bitmap bitmap = null;
+
+        if (url == null) {
+            return bitmap;
+        }
+
+        HttpURLConnection httpURLConnection = null;
+        InputStream inputStream = null;
+
+        try{
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.setConnectTimeout(15000);
+            httpURLConnection.setReadTimeout(10000);
+            httpURLConnection.connect();
+
+            if(httpURLConnection.getResponseCode() == 200) {
+                inputStream = httpURLConnection.getInputStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+
+            } else {
+                Log.e(LOG_TAG, "Error http image request code " + httpURLConnection.getResponseCode());
+            }
+
+        } catch (IOException e) {
+            Log.v(LOG_TAG, "Problem making connection for image url", e);
+        } finally {
+            if(httpURLConnection != null) {
+                httpURLConnection.disconnect();
+            }
+            if(inputStream != null) {
+                inputStream.close();
+            }
+        }
+        return bitmap;
     }
 
 }
