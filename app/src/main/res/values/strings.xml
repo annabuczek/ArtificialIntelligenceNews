@@ -4,4 +4,10 @@
 
     <string name="more_button">more articles</string>
     <string name="refresh_button">refresh</string>
+
+    <!--Messages-->
+    <string name="no_connection">No internet connection</string>
+    <string name="no_articles">No articles found</string>
+    <string name="toast_no_connection">No internet connection\nCan\'t load articles</string>
+    <string name="toast_no_connection_new">No internet connection\nCan\'t load new articles</string>
 </resources>

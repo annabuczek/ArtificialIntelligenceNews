@@ -36,10 +36,10 @@
                 android:id="@+id/list_item_category_tv"
                 android:layout_width="@dimen/image_list_item_width"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_marginRight="@dimen/list_item_margin_small"
                 android:layout_marginTop="@dimen/list_item_margin_small"
                 android:background="@android:color/darker_gray"
+                android:gravity="center_horizontal"
                 android:padding="@dimen/list_item_padding"
                 app:layout_constraintEnd_toStartOf="@id/list_item_title_tv"
                 app:layout_constraintTop_toTopOf="parent"
@@ -52,13 +52,13 @@
                 android:layout_marginLeft="@dimen/list_item_margin_small"
                 android:layout_marginStart="@dimen/list_item_margin_small"
                 android:padding="@dimen/list_item_padding"
-                android:paddingBottom="30dp"
+                android:paddingBottom="@dimen/title_text_view_bottom_padding"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/title_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/list_item_image_view"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="jesli cos jeszcze tu bedzie to okaqze sie co sie stanie, A very big title which will be formatted later but must be here right now this was" />
+                tools:text="Some title" />
 
             <TextView
                 android:id="@+id/list_item_date"
@@ -75,8 +75,8 @@
                 android:id="@+id/list_item_author"
                 android:layout_width="@dimen/author_text_view_width"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/list_item_padding"
                 android:gravity="end"
+                android:padding="@dimen/list_item_padding"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/list_item_date"

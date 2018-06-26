@@ -97,6 +97,9 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         return output.toString();
     }
 
+    /**
+     * Return the color of the category depending of the category name
+     */
     private int getCategoryColor(String category) {
         int categoryColorResourceId;
         switch (category) {

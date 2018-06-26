@@ -26,20 +26,31 @@ import java.util.List;
 
 public final class QueryUtils {
 
+    /** TAG for log messages */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+    /** Number of the current page of json query response */
     private static int pageNumber;
 
+    /** Create private constructor beacuse all the methods are static and constructor should be never used */
     private QueryUtils(){}
 
+    /**
+     * Method to build new query String to access next page of results
+     * @param queryString current query String
+     * @return updated query String
+     */
     public static String buildNewQueryString(String queryString) {
         String part1;
         String part2;
+        //If we are on a first page, split query string to add page filter
         if (pageNumber == 1) {
             String[] parts = queryString.split("(?<=&)", 2);
             part1 = parts[0];
             part2 = parts[1];
             Log.i("TEST BUILDING STRING", "String 1 = " + part1);
             Log.i("TEST BUILDING STRING", "String 2 = " + part2);
+
+            // If we are on any other page, split query string and delete previous page filter
         } else {
             String split = "page=" + pageNumber + "&";
             String[] parts = queryString.split(split, 2);
@@ -49,11 +60,12 @@ public final class QueryUtils {
             Log.i("TEST BUILDING STRING", "String 2 = " + part2);
 
         }
+        // Create String for new page filter
         int nextPage = pageNumber + 1;
         String searchPage = "page=" + nextPage + "&";
-
         Log.i("TEST BUILDING STRING", "search page String = " + searchPage);
 
+        //Build new query string
         StringBuilder newQueryString = new StringBuilder();
         newQueryString.append(part1).append(searchPage).append(part2);
         Log.i("TEST BUILDING STRING", "output new query = " + newQueryString);
@@ -61,6 +73,11 @@ public final class QueryUtils {
         return newQueryString.toString();
     }
 
+    /**
+     * Perform query to server to get List of Articles
+     * @param queryUrl url to perform query by
+     * @return List of Articles
+     */
     public static List<Article> fetchArticles(String queryUrl) {
 
         URL url = createURLObject(queryUrl);
@@ -75,6 +92,9 @@ public final class QueryUtils {
         return articles;
     }
 
+    /**
+     * Creates URL Object from given Url String
+     */
     private static URL createURLObject(String queryUrl) {
         URL url = null;
         try{
@@ -85,6 +105,9 @@ public final class QueryUtils {
         return url;
     }
 
+    /**
+     * Makes an HTTP request to the given URL and return String as a response
+     */
     private static String makeHttpRequest(URL url) throws IOException {
 
         String jsonString = "";
@@ -119,6 +142,9 @@ public final class QueryUtils {
         return jsonString;
     }
 
+    /**
+     * Convert received from server Stream to json String
+     */
     private static String convertStreamToString(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if(inputStream != null){
@@ -132,6 +158,9 @@ public final class QueryUtils {
         return output.toString();
     }
 
+    /**
+     * Parse json String responce to receive valid List of Article
+     */
     private static List<Article> extractArticlesFromJsonResponse(String jsonResponse) {
 
         if(TextUtils.isEmpty(jsonResponse)){
@@ -144,6 +173,7 @@ public final class QueryUtils {
             JSONObject root = new JSONObject(jsonResponse);
             JSONObject response = root.getJSONObject("response");
 
+            // Get the number of the page for further use
             pageNumber = response.getInt("currentPage");
 
             JSONArray results = response.getJSONArray("results");
@@ -178,6 +208,11 @@ public final class QueryUtils {
         return articles;
     }
 
+    /**
+     * Method to load image from url parsed from json String reponse
+     * @param imageUrl url parsed from json String
+     * @return image in the form of Bitmap
+     */
     private static Bitmap loadImageFromUrl(String imageUrl) {
         URL url = createURLObject(imageUrl);
         Bitmap bitmap = null;
@@ -191,6 +226,9 @@ public final class QueryUtils {
         return bitmap;
     }
 
+    /**
+     * Method to make http request to the giver URL and return Bitmap as a response
+     */
     private static Bitmap makeHttpRequestForImage(URL url) throws IOException {
 
         Bitmap bitmap = null;
