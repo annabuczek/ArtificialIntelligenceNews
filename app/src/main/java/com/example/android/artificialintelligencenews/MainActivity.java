@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private ArticleAdapter mAdapter;
     private ProgressBar progressBar;
     private TextView messageTextView;
+    private Button refresh;
 
     private ConnectivityManager cm;
 
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ListView listView = findViewById(R.id.list_view);
         progressBar = findViewById(R.id.progress_bar);
         messageTextView = findViewById(R.id.message_text_view);
+        refresh = findViewById(R.id.refresh_button);
+        //Set visibility of the button as one to use only in special case
+        refresh.setVisibility(View.GONE);
 
         // Get instance of LayoutInflater to inflate list view footer
         LayoutInflater footerInflater = getLayoutInflater();
@@ -71,16 +76,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        // Check if there is internet connection on the device
-        cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-
-        if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
+        if (isConnected()) {
             getLoaderManager().initLoader(0, null, MainActivity.this);
         } else {
             progressBar.setVisibility(View.GONE);
             messageTextView.setText("No internet connection");
+            refresh.setVisibility(View.VISIBLE);
+
+            refresh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(isConnected()) {
+                        getLoaderManager().initLoader(0, null, MainActivity.this);
+                        progressBar.setVisibility(View.VISIBLE);
+                        messageTextView.setVisibility(View.GONE);
+                        refresh.setVisibility(View.GONE);
+                        } else {
+                        Toast.makeText(MainActivity.this, "No internet connection\nCan't load articles", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
 
 
@@ -89,17 +104,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         footerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QUERY_URL_STRING = QueryUtils.buildNewQueryString(QUERY_URL_STRING);
                 Log.i("MainActivity", "Click listener on footer");
 
-                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-                if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
+                if (isConnected()) {
+                    QUERY_URL_STRING = QueryUtils.buildNewQueryString(QUERY_URL_STRING);
                     getLoaderManager().restartLoader(0, null, MainActivity.this);
                     progressBar.setVisibility(View.VISIBLE);
                 } else {
+                    Toast.makeText(MainActivity.this, "No internet connection\nCan't load new articles", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
-                    messageTextView.setText("No internet connection");
                 }
 
 
@@ -131,5 +144,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<List<Article>> loader) {
         mAdapter.clear();
         mAdapter.addAll((new ArrayList<Article>()));
+    }
+
+    private boolean isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        if(activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -32,18 +32,17 @@ public final class QueryUtils {
     private QueryUtils(){}
 
     public static String buildNewQueryString(String queryString) {
-        String currentQueryString = queryString;
         String part1;
         String part2;
         if (pageNumber == 1) {
-            String[] parts = currentQueryString.split("(?<=&)", 2);
+            String[] parts = queryString.split("(?<=&)", 2);
             part1 = parts[0];
             part2 = parts[1];
             Log.i("TEST BUILDING STRING", "String 1 = " + part1);
             Log.i("TEST BUILDING STRING", "String 2 = " + part2);
         } else {
             String split = "page=" + pageNumber + "&";
-            String[] parts = currentQueryString.split(split, 2);
+            String[] parts = queryString.split(split, 2);
             part1 = parts[0];
             part2 = parts[1];
             Log.i("TEST BUILDING STRING", "String 1 = " + part1);
