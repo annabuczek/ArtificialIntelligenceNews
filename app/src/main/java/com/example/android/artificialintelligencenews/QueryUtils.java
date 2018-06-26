@@ -20,22 +20,26 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by aania on 20.06.2018.
- */
-
 public final class QueryUtils {
 
-    /** TAG for log messages */
+    /**
+     * TAG for log messages
+     */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
-    /** Number of the current page of json query response */
+    /**
+     * Number of the current page of json query response
+     */
     private static int pageNumber;
 
-    /** Create private constructor beacuse all the methods are static and constructor should be never used */
-    private QueryUtils(){}
+    /**
+     * Create private constructor beacuse all the methods are static and constructor should be never used
+     */
+    private QueryUtils() {
+    }
 
     /**
      * Method to build new query String to access next page of results
+     *
      * @param queryString current query String
      * @return updated query String
      */
@@ -75,6 +79,7 @@ public final class QueryUtils {
 
     /**
      * Perform query to server to get List of Articles
+     *
      * @param queryUrl url to perform query by
      * @return List of Articles
      */
@@ -82,7 +87,7 @@ public final class QueryUtils {
 
         URL url = createURLObject(queryUrl);
         String jsonString = "";
-        try{
+        try {
             jsonString = makeHttpRequest(url);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Problem with making httpRequest", e);
@@ -97,9 +102,9 @@ public final class QueryUtils {
      */
     private static URL createURLObject(String queryUrl) {
         URL url = null;
-        try{
+        try {
             url = new URL(queryUrl);
-        } catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             Log.e(LOG_TAG, "Error creating URL object from given url String", e);
         }
         return url;
@@ -111,19 +116,19 @@ public final class QueryUtils {
     private static String makeHttpRequest(URL url) throws IOException {
 
         String jsonString = "";
-        if(url == null){
+        if (url == null) {
             return jsonString;
         }
         HttpURLConnection urlConnection = null;
         InputStream inputStreamResponse = null;
-        try{
+        try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.connect();
 
-            if(urlConnection.getResponseCode() == 200){
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 inputStreamResponse = urlConnection.getInputStream();
                 jsonString = convertStreamToString(inputStreamResponse);
             } else {
@@ -132,10 +137,10 @@ public final class QueryUtils {
         } catch (IOException e) {
             Log.e(LOG_TAG, "Problem with making UrlConnection", e);
         } finally {
-            if(urlConnection != null){
+            if (urlConnection != null) {
                 urlConnection.disconnect();
             }
-            if(inputStreamResponse != null){
+            if (inputStreamResponse != null) {
                 inputStreamResponse.close();
             }
         }
@@ -147,11 +152,11 @@ public final class QueryUtils {
      */
     private static String convertStreamToString(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
-        if(inputStream != null){
+        if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
-            while((line = bufferedReader.readLine()) != null){
+            while ((line = bufferedReader.readLine()) != null) {
                 output.append(line);
             }
         }
@@ -163,13 +168,13 @@ public final class QueryUtils {
      */
     private static List<Article> extractArticlesFromJsonResponse(String jsonResponse) {
 
-        if(TextUtils.isEmpty(jsonResponse)){
+        if (TextUtils.isEmpty(jsonResponse)) {
             return null;
         }
 
         List<Article> articles = new ArrayList<>();
 
-        try{
+        try {
             JSONObject root = new JSONObject(jsonResponse);
             JSONObject response = root.getJSONObject("response");
 
@@ -178,7 +183,7 @@ public final class QueryUtils {
 
             JSONArray results = response.getJSONArray("results");
 
-            for(int i = 0; i < results.length(); i++) {
+            for (int i = 0; i < results.length(); i++) {
                 JSONObject articleInfo = results.getJSONObject(i);
 
                 String categoryArticle = articleInfo.getString("sectionName");
@@ -210,6 +215,7 @@ public final class QueryUtils {
 
     /**
      * Method to load image from url parsed from json String reponse
+     *
      * @param imageUrl url parsed from json String
      * @return image in the form of Bitmap
      */
@@ -234,20 +240,20 @@ public final class QueryUtils {
         Bitmap bitmap = null;
 
         if (url == null) {
-            return bitmap;
+            return null;
         }
 
         HttpURLConnection httpURLConnection = null;
         InputStream inputStream = null;
 
-        try{
+        try {
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
             httpURLConnection.setConnectTimeout(15000);
             httpURLConnection.setReadTimeout(10000);
             httpURLConnection.connect();
 
-            if(httpURLConnection.getResponseCode() == 200) {
+            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 inputStream = httpURLConnection.getInputStream();
                 bitmap = BitmapFactory.decodeStream(inputStream);
 
@@ -258,10 +264,10 @@ public final class QueryUtils {
         } catch (IOException e) {
             Log.v(LOG_TAG, "Problem making connection for image url", e);
         } finally {
-            if(httpURLConnection != null) {
+            if (httpURLConnection != null) {
                 httpURLConnection.disconnect();
             }
-            if(inputStream != null) {
+            if (inputStream != null) {
                 inputStream.close();
             }
         }

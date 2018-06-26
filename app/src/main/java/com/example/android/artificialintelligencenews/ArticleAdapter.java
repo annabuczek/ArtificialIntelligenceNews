@@ -17,10 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by aania on 20.06.2018.
- */
-
 public class ArticleAdapter extends ArrayAdapter<Article> {
 
     private static final String CURRENT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
