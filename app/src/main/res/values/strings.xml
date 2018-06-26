@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Artificial Intelligence News</string>
+
+    <string name="more_button">more articles</string>
 </resources>

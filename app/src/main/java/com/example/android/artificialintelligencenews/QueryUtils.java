@@ -27,8 +27,40 @@ import java.util.List;
 public final class QueryUtils {
 
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+    private static int pageNumber;
 
     private QueryUtils(){}
+
+    public static String buildNewQueryString(String queryString) {
+        String currentQueryString = queryString;
+        String part1;
+        String part2;
+        if (pageNumber == 1) {
+            String[] parts = currentQueryString.split("(?<=&)", 2);
+            part1 = parts[0];
+            part2 = parts[1];
+            Log.i("TEST BUILDING STRING", "String 1 = " + part1);
+            Log.i("TEST BUILDING STRING", "String 2 = " + part2);
+        } else {
+            String split = "page=" + pageNumber + "&";
+            String[] parts = currentQueryString.split(split, 2);
+            part1 = parts[0];
+            part2 = parts[1];
+            Log.i("TEST BUILDING STRING", "String 1 = " + part1);
+            Log.i("TEST BUILDING STRING", "String 2 = " + part2);
+
+        }
+        int nextPage = pageNumber + 1;
+        String searchPage = "page=" + nextPage + "&";
+
+        Log.i("TEST BUILDING STRING", "search page String = " + searchPage);
+
+        StringBuilder newQueryString = new StringBuilder();
+        newQueryString.append(part1).append(searchPage).append(part2);
+        Log.i("TEST BUILDING STRING", "output new query = " + newQueryString);
+
+        return newQueryString.toString();
+    }
 
     public static List<Article> fetchArticles(String queryUrl) {
 
@@ -112,6 +144,9 @@ public final class QueryUtils {
         try{
             JSONObject root = new JSONObject(jsonResponse);
             JSONObject response = root.getJSONObject("response");
+
+            pageNumber = response.getInt("currentPage");
+
             JSONArray results = response.getJSONArray("results");
 
             for(int i = 0; i < results.length(); i++) {
@@ -195,5 +230,4 @@ public final class QueryUtils {
         }
         return bitmap;
     }
-
 }
