@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.android.artificialintelligencenews.MainActivity"
+    android:background="@color/primaryLight"
     >
 <ListView
     android:id="@+id/list_view"
@@ -15,8 +16,8 @@
     app:layout_constraintLeft_toLeftOf="parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/darker_gray"
-    android:divider="@android:color/transparent" />
+    android:divider="@android:color/transparent"
+    android:background="@color/primaryLight"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -32,6 +33,7 @@
         android:id="@+id/message_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -43,6 +45,8 @@
         android:text="@string/refresh_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="@id/message_text_view"
         app:layout_constraintRight_toRightOf="parent"

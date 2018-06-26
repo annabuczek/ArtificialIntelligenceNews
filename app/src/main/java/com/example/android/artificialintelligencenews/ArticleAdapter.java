@@ -3,6 +3,7 @@ package com.example.android.artificialintelligencenews;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,8 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
         TextView categoryTextView = convertView.findViewById(R.id.list_item_category_tv);
         categoryTextView.setText(article.getCategory());
+        int categoryColor = getCategoryColor(article.getCategory());
+        categoryTextView.setBackgroundColor(categoryColor);
 
         TextView titleTextView = convertView.findViewById(R.id.list_item_title_tv);
         titleTextView.setText(article.getTitle());
@@ -59,10 +62,11 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
     /**
      * Helper method to format date and time
+     *
      * @param datetime String with date and time
      * @return properly formatted time
      */
-    private String formatDateTime (String datetime) {
+    private String formatDateTime(String datetime) {
         // Create new SimpleDateFormat the same as received String datetime
         SimpleDateFormat currentDateFormat = new SimpleDateFormat(CURRENT_DATE_FORMAT);
         //Initialize final String
@@ -83,6 +87,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
     /**
      * Method to build the string for displaying author information
+     *
      * @param author String representing author parsed from JSON
      * @return ready to display String representing author
      */
@@ -90,5 +95,24 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         StringBuilder output = new StringBuilder();
         output.append("by ").append(author);
         return output.toString();
+    }
+
+    private int getCategoryColor(String category) {
+        int categoryColorResourceId;
+        switch (category) {
+            case "Technology":
+                categoryColorResourceId = R.color.color_category_technology;
+                break;
+            case "Opinion":
+                categoryColorResourceId = R.color.color_category_opinion;
+                break;
+            case "Science":
+                categoryColorResourceId = R.color.color_category_science;
+                break;
+            default:
+                categoryColorResourceId = R.color.color_category_default;
+                break;
+        }
+        return ContextCompat.getColor(getContext(), categoryColorResourceId);
     }
 }
