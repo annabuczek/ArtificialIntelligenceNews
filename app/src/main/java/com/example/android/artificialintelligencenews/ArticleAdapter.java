@@ -102,7 +102,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
             case "Technology":
                 categoryColorResourceId = R.color.color_category_technology;
                 break;
-            case "Opinion":
+            case "Education":
                 categoryColorResourceId = R.color.color_category_opinion;
                 break;
             case "Science":

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Arrays for Preference - category -->
+<resources>
+    <string-array name="settings_category_labels">
+        <item>@string/category_all_label</item>
+        <item>@string/category_technology_label</item>
+        <item>@string/category_education_label</item>
+        <item>@string/category_science_label</item>
+    </string-array>
+
+    <string-array name="settings_category_values">
+        <item>@string/category_all_value</item>
+        <item>@string/category_technology_value</item>
+        <item>@string/category_education_value</item>
+        <item>@string/category_science_value</item>
+    </string-array>
+</resources>

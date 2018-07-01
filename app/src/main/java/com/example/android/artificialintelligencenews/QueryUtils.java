@@ -29,7 +29,7 @@ public final class QueryUtils {
     /**
      * Number of the current page of json query response
      */
-    private static int pageNumber;
+    public static int pageNumber;
 
     /**
      * Create private constructor beacuse all the methods are static and constructor should be never used
